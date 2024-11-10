@@ -6,9 +6,14 @@ import (
 	"errors"
 	"library-synapsis/helper"
 	"library-synapsis/model/domain"
+	"library-synapsis/repository"
 )
 
 type UserManagementRepositoryImpl struct{}
+
+func NewUserManagementRepository() repository.UserManagementRepository {
+	return &UserManagementRepositoryImpl{}
+}
 
 func (User *UserManagementRepositoryImpl) CreateUser(ctx context.Context, tx *sql.Tx, user domain.UserManagement) domain.UserManagement {
 	SQL := "INSERT INTO user_management(role_id, user_name, email, password) VALUES ($1, $2, $3, $4) RETURNING user_id"

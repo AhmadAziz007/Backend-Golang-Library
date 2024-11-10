@@ -10,7 +10,7 @@ import (
 type UserManagementService interface {
 	CreateUser(ctx context.Context, request create.UserManagementCreateRequest) response.UserManagementResponse
 	UpdateUser(ctx context.Context, request update.UserManagementUpdateRequest) response.UserManagementResponse
-	DeleteUser(ctx context.Context, categoryId int)
-	FindByUserId(ctx context.Context, categoryId int) response.UserManagementResponse
+	DeleteUser(ctx context.Context, userId int)
+	FindByUserId(ctx context.Context, userId int) response.UserManagementResponse
 	FindAllUser(ctx context.Context) []response.UserManagementResponse
 }

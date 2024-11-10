@@ -32,10 +32,14 @@ func main() {
 	bookManagementService := implement2.NewBookManagementService(bookManagementRepository, db, validate)
 	bookManagementController := implement3.NewBookManagementController(bookManagementService)
 
-	// Asumsi db adalah objek *sql.DB yang sudah terhubung ke database
-	loginController := controller.NewLoginController(UserManagementRepository, db)
+	userManagementRepository := implement.NewUserManagementRepository()
+	userManagementService := implement2.NewUserManagementService(userManagementRepository, db, validate)
+	userManagementController := implement3.NewUserManegementController(userManagementService)
 
-	router := app.NewRouter(categoryController, authorManagementController, bookManagementController, loginController)
+	// Asumsi db adalah objek *sql.DB yang sudah terhubung ke database
+	loginController := controller.NewLoginController(userManagementRepository, db)
+
+	router := app.NewRouter(categoryController, authorManagementController, bookManagementController, userManagementController, loginController)
 
 	server := http.Server{
 		Addr:    "localhost:8080",
