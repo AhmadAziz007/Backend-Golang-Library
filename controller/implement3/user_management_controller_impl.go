@@ -62,7 +62,7 @@ func (controller *UserManagementControllerImpl) DeleteUser(writer http.ResponseW
 	webResponse := web.WebResponse{
 		Code:   200,
 		Status: "OK",
-		Data:   "Book deleted successfully",
+		Data:   "user deleted successfully",
 	}
 	helper.WriteToResponseBody(writer, webResponse)
 }

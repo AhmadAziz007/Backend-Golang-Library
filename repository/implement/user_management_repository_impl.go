@@ -41,36 +41,13 @@ func (User *UserManagementRepositoryImpl) DeleteUser(ctx context.Context, tx *sq
 	helper.PanicIfError(err)
 }
 
-func (User *UserManagementRepositoryImpl) FindByEmail(ctx context.Context, tx *sql.Tx, email string) (domain.UserManagement, error) {
-	SQL := `
-        SELECT a.user_id, a.role_id, a.user_name, a.email, a.password
-        FROM user_management a
-        LEFT JOIN role_management c ON a.role_id = c.role_id
-        WHERE a.email = $1
-    `
-	row := tx.QueryRowContext(ctx, SQL, email)
-	user := domain.UserManagement{}
-	err := row.Scan(
-		&user.UserId,
-		&user.RoleId,
-		&user.UserName,
-		&user.Email,
-		&user.Password)
-	if err != nil {
-		if err == sql.ErrNoRows {
-			return user, errors.New("user is not found")
-		}
-		helper.PanicIfError(err)
-	}
-	return user, nil
-}
-
 func (User *UserManagementRepositoryImpl) FindByUserId(ctx context.Context, tx *sql.Tx, userId int) (domain.UserManagement, error) {
 	SQL := `
 		SELECT a.user_id, a.role_id, a.user_name, a.email, a.password
 		FROM user_management a
 		LEFT JOIN role_management c ON a.role_id = c.role_id
 		WHERE a.user_id = $1
+        ORDER BY a.user_id ASC
 	`
 	row := tx.QueryRowContext(ctx, SQL, userId)
 	user := domain.UserManagement{}
@@ -94,7 +71,7 @@ func (User *UserManagementRepositoryImpl) FindAllUser(ctx context.Context, tx *s
 		SELECT a.user_id, a.role_id, a.user_name, a.email, a.password
 		FROM user_management a
 		LEFT JOIN role_management c ON a.role_id = c.role_id
-		WHERE a.user_id = $1
+		ORDER BY a.user_id ASC
 	`
 	rows, err := tx.QueryContext(ctx, SQL)
 	helper.PanicIfError(err)

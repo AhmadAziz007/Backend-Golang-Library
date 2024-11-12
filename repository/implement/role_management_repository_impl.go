@@ -53,21 +53,6 @@ func (repository *RoleManagementRepositoryImpl) FindByRoleId(ctx context.Context
 	return role, nil
 }
 
-func (repository *RoleManagementRepositoryImpl) FindByRoleName(ctx context.Context, tx *sql.Tx, roleName string) (domain.RoleManagement, error) {
-	SQL := "SELECT role_id, role_name FROM role_management WHERE role_name = $1"
-	row := tx.QueryRowContext(ctx, SQL, roleName)
-
-	role := domain.RoleManagement{}
-	err := row.Scan(&role.RoleId, &role.RoleName)
-	if err != nil {
-		if err == sql.ErrNoRows {
-			return role, errors.New("role not found")
-		}
-		helper.PanicIfError(err)
-	}
-	return role, nil
-}
-
 func (repository *RoleManagementRepositoryImpl) FindAllRole(ctx context.Context, tx *sql.Tx) []domain.RoleManagement {
 	SQL := "select role_id, role_name from role_management"
 	rows, err := tx.QueryContext(ctx, SQL)
